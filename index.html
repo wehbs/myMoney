@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+    <script>
+      window.onload = function() {
+        var linkToken = '<?= linkToken ?>'; // Pass the linkToken from GAS to client-side script using templated HTML
+        var handler = Plaid.create({
+          token: linkToken,
+          onSuccess: function(public_token) {
+            // Pass both the public_token to your GAS function
+            google.script.run.linkBankAccount(public_token);
+            google.script.host.close();
+          },
+        });
+        handler.open();
+      };
+    </script>
+  </head>
+  <body>
+  </body>
+</html>

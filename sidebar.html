@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <!-- Material Design Lite -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+      gap: 20px;
+    }
+
+    .bank {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+      margin-bottom: 20px;
+    }
+
+    .account {
+      margin-left: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <button id="linkButton" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+    Link Bank Account
+  </button>
+  <button id="syncButton" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+    Sync Transactions
+  </button>
+  <div id="banks"></div>
+  <script>
+    document.getElementById('linkButton').addEventListener('click', function() {
+      google.script.run.openPlaidModal();
+    });
+    document.getElementById('syncButton').addEventListener('click', function() {
+      google.script.run.syncAndWriteTransactions();
+    });
+
+    function fetchBankAccounts() {
+      google.script.run.withSuccessHandler(renderBankAccounts).fetchBankAccounts();
+    }
+
+    function renderBankAccounts(banks) {
+      var banksContainer = document.getElementById('banks');
+      banksContainer.innerHTML = '';
+      banks.forEach(function(bank) {
+        var bankElement = document.createElement('div');
+        bankElement.className = 'bank';
+        bank.names.forEach(function(name) {
+          var accountElement = document.createElement('div');
+          accountElement.className = 'account';
+          accountElement.textContent = name;
+          bankElement.appendChild(accountElement);
+        });
+        var deleteButton = document.createElement('button');
+        deleteButton.className = 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored';
+        deleteButton.textContent = 'Delete Bank';
+        deleteButton.addEventListener('click', function() {
+          google.script.run.removeBankAccount(bank.id);
+        });
+        bankElement.appendChild(deleteButton);
+        banksContainer.appendChild(bankElement);
+      });
+    }
+
+    fetchBankAccounts();
+  </script>
+</body>
+
+</html>
