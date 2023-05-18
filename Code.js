@@ -33,7 +33,7 @@ function linkBankAccount(public_token) {
 
   // Sync transactions immediately after linking the bank account
   var transactionsData = plaid.syncTransactions();
-  // Make sure to pass the correct array to writeToSheet function
+  // Pass transactions array to writeToSheet function
   var transactions = transactionsData.added;
   writeToSheet(transactions);
   // Writes the balance details to the balance history sheet
@@ -137,7 +137,7 @@ function writeBalanceHistoryToSheet(accountDetailsArray) {
 function syncAndWriteTransactions() {
   var plaid = getPlaidServiceInstance();
   var transactionsData = plaid.syncTransactions();
-  // Make sure to pass the correct array to writeToSheet function
+  // Pass transactions array to writeToSheet function
   var transactions = transactionsData.added;
   writeToSheet(transactions);
   // Writes the balance details to the balance history sheet

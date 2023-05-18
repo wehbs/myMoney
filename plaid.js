@@ -31,7 +31,7 @@ function PlaidService() {
     return jsonResponse.link_token;
   };
 
-  // The new function that takes the link_token and retrieves an access_token
+  // Takes the link_token and retrieves an access_token
   this.getAccessToken = function (public_token) {
     var payload = {
       client_id: CLIENT_ID,
@@ -148,8 +148,6 @@ function PlaidService() {
         var item_id = key.split("PLAID_ACCESS_TOKEN_")[1];
         var access_token = properties[key];
         var cursor = properties["PLAID_CURSOR_ID_" + item_id] || "";
-        Logger.log(access_token); // log the access token from properties
-        Logger.log(cursor); // log the access token from properties
 
         // Get the account details
         var accountDetails = this.getAccountDetails(access_token);

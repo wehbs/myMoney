@@ -9,7 +9,7 @@
         var handler = Plaid.create({
           token: linkToken,
           onSuccess: function (public_token) {
-            // Pass both the public_token to your GAS function
+            // Pass the public_token to GAS function
             google.script.run.linkBankAccount(public_token);
             google.script.host.close();
           },
